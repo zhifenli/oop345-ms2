@@ -28,5 +28,5 @@ namespace sdds
         void updateQuantity();
         void display(std::ostream &os, bool full) const;
     };
-    std::string trim(std::string str);
+
 }

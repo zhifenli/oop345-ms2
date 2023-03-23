@@ -24,6 +24,7 @@ namespace sdds
         Item **m_lstItem{nullptr};
 
         inline static size_t m_widthField{0};
+        size_t findItemByName(std::string name, bool &isFound);
 
     public:
         CustomerOrder(const std::string &str);

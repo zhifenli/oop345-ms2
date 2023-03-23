@@ -21,4 +21,5 @@ namespace sdds
         static void setDelimiter(char newDelimiter);
         static char getDelimiter();
     };
+    std::string trim(std::string str);
 }

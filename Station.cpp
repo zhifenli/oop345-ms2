@@ -63,11 +63,4 @@ namespace sdds
         os << std::endl;
     }
 
-    std::string trim(std::string str)
-    {
-        size_t start = str.find_first_not_of(' ');
-        size_t end = str.find_last_not_of(' ');
-        return str.substr(start, end + 1);
-    }
-
 }

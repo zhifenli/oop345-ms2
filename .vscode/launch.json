@@ -2,6 +2,31 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "(lldb) Launch",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": " ${workspaceFolder}/a.out Stations1.txt Stations2.txt CustomerOrders.txt",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb"
+    },
+    {
+      "name": "(gdb) Launch",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "program": "$/Users/zhifenli/Desktop/MS2/a.out /Users/zhifenli/Desktop/MS2}/Stations1.txt /Users/zhifenli/Desktop/MS2/Stations2.txt /Users/zhifenli/Desktop/MS2/CustomerOrders.txt",
+      "stopAtEntry": false,
+      "environment": [],
+      "externalConsole": true,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb"
+    },
+    {
       "name": "C/C++ Runner: Debug Session",
       "type": "lldb",
       "request": "launch",

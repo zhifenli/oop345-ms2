@@ -110,7 +110,7 @@ int main(int argc, char **argv)
 					auto token = util.extractToken(item.data, pos, more);
 					cout << "   Token: [" << token << "] [" << util.getFieldWidth() << "]\n";
 				}
-				catch (...)
+				catch (const string &err)
 				{
 					cout << "   ERROR: No token.\n";
 				}
@@ -120,78 +120,81 @@ int main(int argc, char **argv)
 
 	{
 		// Milestone 2
-		cout << "[M2] " << argv[3] << ", SIZE=" << theOrders.size() << endl;
 		loadFromFile<CustomerOrder>(argv[3], theOrders);
+		cout << "loaded file: " << argv[3] << endl;
+		cout << "\t\tloaded file size " << theOrders.size() << endl;
+		cout << "========================================" << endl;
+		cout << "=                Orders                =" << endl;
+		cout << "========================================" << endl;
+		for (CustomerOrder &order : theOrders)
+			order.display(std::cout);
+		cout << endl
+			 << endl;
 
-		// cout << "========================================" << endl;
-		// cout << "=                Orders                =" << endl;
-		// cout << "========================================" << endl;
-		// for (CustomerOrder &order : theOrders)
-		// 	order.display(std::cout);
-		// cout << endl
-		// 	 << endl;
+		// Select an object and verify all the functionality it working
+		cout << "========================================" << endl;
+		cout << "=          Manual Validation           =" << endl;
+		cout << "========================================" << endl;
+		cout << "CustomerOrders::display(): "; // Test #1
+		theOrders[theOrders.size() - 1].display(cout);
+		cout << endl;
 
-		// // Select an object and verify all the functionality it working
-		// cout << "========================================" << endl;
-		// cout << "=          Manual Validation           =" << endl;
-		// cout << "========================================" << endl;
-		// cout << "CustomerOrders::display(): "; // Test #1
-		// theOrders[theOrders.size() - 1].display(cout);
-		// cout << endl;
+		try
+		{
+			// copy constructor
+			cout << "CustomerOrders::CustomerOrders(&): "; // Test #2
+			CustomerOrder anOrder(theOrders[0]);
+		}
+		catch (std::string err)
+		{
+			cout << "----> ERROR: Cannot make copies.";
+			cout << endl
+				 << endl;
+		}
 
-		// try
-		// {
-		// 	// copy constructor
-		// 	cout << "CustomerOrders::CustomerOrders(&): "; // Test #2
-		// 	CustomerOrder anOrder(theOrders[0]);
-		// }
-		// catch (std::string err)
-		// {
-		// 	cout << "----> ERROR: Cannot make copies.";
-		// 	cout << endl
-		// 		 << endl;
-		// }
+		// move constructor
+		cout << "CustomerOrders::CustomerOrders(&&): "; // Test #3
+		CustomerOrder tmp(std::move(theOrders[theOrders.size() - 1]));
+		theOrders.pop_back();
+		tmp.display(cout);
+		cout << endl;
 
-		// // move constructor
-		// cout << "CustomerOrders::CustomerOrders(&&): "; // Test #3
-		// CustomerOrder tmp(std::move(theOrders[theOrders.size() - 1]));
-		// theOrders.pop_back();
-		// tmp.display(cout);
-		// cout << endl;
+		cout << "CustomerOrders::CustomerOrders(string): "; // Test #4
+		string strRecord = "Chloe/Flight PC/CPU/GPU/Power Supply";
+		Utilities::setDelimiter('/');
+		CustomerOrder tmp2(strRecord);
+		tmp2.display(cout);
+		cout << endl;
 
-		// cout << "CustomerOrders::CustomerOrders(string): "; // Test #4
-		// string strRecord = "Chloe/Flight PC/CPU/GPU/Power Supply";
-		// Utilities::setDelimiter('/');
-		// CustomerOrder tmp2(strRecord);
-		// tmp2.display(cout);
-		// cout << endl;
+		cout << "CustomerOrders::operator=(&&): "; // Test #5
+		tmp2 = std::move(theOrders[theOrders.size() - 1]);
+		theOrders.pop_back();
 
-		// cout << "CustomerOrders::operator=(&&): "; // Test #5
-		// tmp2 = std::move(theOrders[theOrders.size() - 1]);
-		// theOrders.pop_back();
-		// tmp2.display(cout);
-		// cout << endl;
+		// cout << "#############################start" << endl;
+		tmp2.display(cout);
+		// cout << "#############################end" << endl;
 
-		// cout << "CustomerOrders::fillItem()" << endl; // Test #6
-		// cout << "isOrderFilled(): "
-		// 	 << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
-		// 	 << endl;
+		cout << endl;
 
-		// tmp2.fillItem(theStations[0], cout);
-		// cout << "isItemFilled(\"CPU\"): "
-		// 	 << (tmp2.isItemFilled("CPU") ? "FILLED" : "MISSING")
-		// 	 << endl;
+		cout << "CustomerOrders::fillItem()" << endl; // Test #6
+		cout << "isOrderFilled(): "
+			 << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
+			 << endl;
 
-		// cout << "isOrderFilled(): "
-		// 	 << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
-		// 	 << endl;
+		cout << "isItemFilled(\"CPU\"): "
+			 << (tmp2.isItemFilled("CPU") ? "FILLED" : "MISSING")
+			 << endl;
 
-		// for (size_t i = 0; i < theStations.size(); i++)
-		// 	tmp2.fillItem(theStations[i], cout);
+		cout << "isOrderFilled(): "
+			 << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
+			 << endl;
 
-		// cout << "isOrderFilled(): "
-		// 	 << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
-		// 	 << endl;
+		for (size_t i = 0; i < theStations.size(); i++)
+			tmp2.fillItem(theStations[i], cout);
+
+		cout << "isOrderFilled(): "
+			 << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
+			 << endl;
 	}
 	return 0;
 }
@@ -203,17 +206,18 @@ static void loadFromFile(const char *filename, vector<T> &theCollection)
 	if (!file)
 		throw string("Unable to open [") + filename + "] file.";
 
-	cout << "#filename:  " << filename << endl;
-
 	string record;
 	while (!file.eof())
 	{
+		cout << "#Before get line  " << endl;
+
 		std::getline(file, record);
-		cout << "  #line record:  " << record << endl;
+		cout << "\t line record:  " << record << endl;
 		T elem(record);
-		cout << "  %1" << endl;
+		cout << "\t created item, moving item" << endl;
 		theCollection.push_back(std::move(elem));
-		cout << "     %2&&&" << endl;
+		cout << "\t  moved item" << endl;
+		cout << "\t theCollection.size: " << theCollection.size() << endl;
 	}
 
 	file.close();

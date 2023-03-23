@@ -38,14 +38,15 @@ namespace sdds
         }
         else // find a delimeter
         {
-            token = str.substr(next_pos, delim_pos - next_pos);
+            token = trim(str.substr(next_pos, delim_pos - next_pos));
             next_pos = delim_pos + 1;
             more = true;
         }
 
-        size_t start = token.find_first_not_of(" ");
-        size_t end = token.find_last_not_of(" ");
-        token = token.substr(start, end - start + 1);
+        // size_t start = token.find_first_not_of(" ");
+        // size_t end = token.find_last_not_of(" ");
+        // token = token.substr(start, end - start + 1);
+
         if (m_widthField < token.size())
         {
             m_widthField = token.size();
@@ -63,6 +64,13 @@ namespace sdds
     char Utilities::getDelimiter()
     {
         return m_delimiter;
+    }
+
+    std::string trim(std::string str)
+    {
+        size_t start = str.find_first_not_of(' ');
+        size_t end = str.find_last_not_of(' ');
+        return str.substr(start, end + 1);
     }
 
 }
