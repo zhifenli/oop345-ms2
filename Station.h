@@ -21,7 +21,7 @@ namespace sdds
         inline static size_t id_generator{0};
 
     public:
-        Station(const std::string &);
+        Station(const std::string &str);
         const std::string &getItemName() const;
         size_t getNextSerialNumber();
         size_t getQuantity() const;

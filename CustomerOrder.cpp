@@ -16,6 +16,7 @@ namespace sdds
         bool more = true;
         m_name = trim(ut.extractToken(str, next_pos, more));
         m_product = trim(ut.extractToken(str, next_pos, more));
+
         if (m_widthField < ut.getFieldWidth())
         {
             m_widthField = ut.getFieldWidth();
@@ -42,6 +43,7 @@ namespace sdds
             m_lstItem[i] = new Item(temp[i]);
         }
     }
+
     CustomerOrder::CustomerOrder(const CustomerOrder &src)
     {
         throw std::string(" ERROR: Cannot make copies.");
@@ -49,10 +51,7 @@ namespace sdds
 
     CustomerOrder::CustomerOrder(CustomerOrder &&src) noexcept
     {
-        // cout << "[Constructor2 move]: " << src.m_name << endl;
-        // cout << "[] displaying other: " << src.m_name << endl;
-        // src.display(cout);
-        // cout << "To MOVE ..." << src.m_name << endl;
+
         *this = std::move(src);
     }
     CustomerOrder &CustomerOrder::operator=(CustomerOrder &&src) noexcept
@@ -73,14 +72,16 @@ namespace sdds
             m_lstItem = nullptr;
 
             m_name = src.m_name;
+            src.m_name = {};
+
             m_product = src.m_product;
+            src.m_product = {};
 
             m_cntItem = src.m_cntItem;
-            m_lstItem = src.m_lstItem;
-
-            src.m_lstItem = nullptr;
             src.m_cntItem = 0;
-            // cout << "\t move is done " << m_cntItem << endl;
+
+            m_lstItem = src.m_lstItem;
+            src.m_lstItem = nullptr;
         }
         return *this;
     }
@@ -95,7 +96,7 @@ namespace sdds
     }
     bool CustomerOrder::isOrderFilled() const
     {
-        for (int i = 0; i < m_cntItem; i++)
+        for (size_t i = 0; i < m_cntItem; i++)
         {
             if (m_lstItem[i]->m_isFilled == false)
                 return false;
@@ -104,9 +105,9 @@ namespace sdds
     }
     bool CustomerOrder::isItemFilled(const std::string &itemName) const
     {
-        for (int i = 0; i < m_cntItem; i++)
+        for (size_t i = 0; i < m_cntItem; i++)
         {
-            if (m_lstItem[i]->m_itemName == itemName)
+            if (m_lstItem[i]->m_itemName == itemName && !m_lstItem[i]->m_isFilled)
                 return true;
         }
         return false;
@@ -159,6 +160,7 @@ namespace sdds
         {
             os << "[" << setw(6) << setfill('0') << m_lstItem[i]->m_serialNumber << "] ";
             os << setw(m_widthField) << setfill(' ') << left << m_lstItem[i]->m_itemName;
+            os << " -";
             if (m_lstItem[i]->m_isFilled)
             {
                 os << "FILLED";

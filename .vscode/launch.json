@@ -31,8 +31,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/zhifenli/Desktop/MS2",
-      "program": "/Users/zhifenli/Desktop/MS2/build/Debug/outDebug"
+      "cwd": "/Users/zhifenli/Documents/term3/oop345/MS3",
+      "program": "/Users/zhifenli/Documents/term3/oop345/MS3/build/Debug/outDebug"
     }
   ]
 }
