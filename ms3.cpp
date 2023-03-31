@@ -43,74 +43,82 @@ int main(int argc, char **argv)
 	vector<Workstation *> theStations;
 	vector<CustomerOrder> theOrders;
 
-	// try {
-	// 	Utilities::setDelimiter(',');
-	// 	loadFromFile(argv[1], theStations);
-	// 	Utilities::setDelimiter('|');
-	// 	loadFromFile(argv[2], theStations);
+	try
+	{
+		Utilities::setDelimiter(',');
+		loadFromFile(argv[1], theStations);
+		Utilities::setDelimiter('|');
+		loadFromFile(argv[2], theStations);
 
-	// 	cout << "========================================" << endl;
-	// 	cout << "=         Stations (summary)           =" << endl;
-	// 	cout << "========================================" << endl;
-	// 	for (const auto* station : theStations)
-	// 		station->Station::display(cout, false);
-	// 	cout << endl << endl;
+		cout << "========================================" << endl;
+		cout << "=         Stations (summary)           =" << endl;
+		cout << "========================================" << endl;
+		for (const auto *station : theStations)
+			station->Station::display(cout, false);
+		cout << endl
+			 << endl;
 
-	// 	cout << "========================================" << endl;
-	// 	cout << "=          Stations (full)             =" << endl;
-	// 	cout << "========================================" << endl;
-	// 	for (const auto* station : theStations)
-	// 		station->Station::display(cout, true);
-	// 	cout << endl << endl;
+		cout << "========================================" << endl;
+		cout << "=          Stations (full)             =" << endl;
+		cout << "========================================" << endl;
+		for (const auto *station : theStations)
+			station->Station::display(cout, true);
+		cout << endl
+			 << endl;
 
-	// 	//Select an object and verify all the functionality it working
-	// 	cout << "========================================" << endl;
-	// 	cout << "=          Manual Validation           =" << endl;
-	// 	cout << "========================================" << endl;
-	// 	cout << "getItemName(): " << theStations[0]->getItemName() << endl;
-	// 	cout << "getNextSerialNumber(): " << theStations[0]->getNextSerialNumber() << endl;
-	// 	cout << "getNextSerialNumber(): " << theStations[0]->getNextSerialNumber() << endl;
-	// 	cout << "getQuantity(): " << theStations[0]->getQuantity() << endl;
-	// 	theStations[0]->updateQuantity();
-	// 	cout << "getQuantity(): " << theStations[0]->getQuantity() << endl;
-	// 	cout << endl << endl;
+		// Select an object and verify all the functionality it working
+		cout << "========================================" << endl;
+		cout << "=          Manual Validation           =" << endl;
+		cout << "========================================" << endl;
+		cout << "getItemName(): " << theStations[0]->getItemName() << endl;
+		cout << "getNextSerialNumber(): " << theStations[0]->getNextSerialNumber() << endl;
+		cout << "getNextSerialNumber(): " << theStations[0]->getNextSerialNumber() << endl;
+		cout << "getQuantity(): " << theStations[0]->getQuantity() << endl;
+		theStations[0]->updateQuantity();
+		cout << "getQuantity(): " << theStations[0]->getQuantity() << endl;
+		cout << endl
+			 << endl;
 
-	// 	loadFromFile<CustomerOrder>(argv[3], theOrders);
+		loadFromFile<CustomerOrder>(argv[3], theOrders);
 
-	// 	cout << "========================================" << endl;
-	// 	cout << "=                Orders                =" << endl;
-	// 	cout << "========================================" << endl;
-	// 	for (auto& order : theOrders) {
-	// 		order.display(std::cout);
-	// 		g_pending.push_back(std::move(order));
-	// 	}
-	// 	cout << endl << endl;
+		cout << "========================================" << endl;
+		cout << "=                Orders                =" << endl;
+		cout << "========================================" << endl;
+		for (auto &order : theOrders)
+		{
+			order.display(std::cout);
+			g_pending.push_back(std::move(order));
+		}
+		cout << endl
+			 << endl;
 
-	// 	cout << "========================================" << endl;
-	// 	cout << "=       Display Stations (loaded)      =" << endl;
-	// 	cout << "========================================" << endl;
-	// 	LineManager lm(argv[4], theStations);
-	// 	lm.display(cout);
-	// 	cout << endl << endl;
+		// cout << "========================================" << endl;
+		// cout << "=       Display Stations (loaded)      =" << endl;
+		// cout << "========================================" << endl;
+		// LineManager lm(argv[4], theStations);
+		// lm.display(cout);
+		// cout << endl
+		// 	 << endl;
 
-	// 	cout << "========================================" << endl;
-	// 	cout << "=      Display Stations (ordered)      =" << endl;
-	// 	cout << "========================================" << endl;
-	// 	lm.reorderStations();
-	// 	lm.display(cout);
-	// 	cout << endl << endl;
+		// 	cout << "========================================" << endl;
+		// 	cout << "=      Display Stations (ordered)      =" << endl;
+		// 	cout << "========================================" << endl;
+		// 	lm.reorderStations();
+		// 	lm.display(cout);
+		// 	cout << endl << endl;
 
-	// 	cout << "========================================" << endl;
-	// 	cout << "=           Filling Orders             =" << endl;
-	// 	cout << "========================================" << endl;
-	// 	//run the assembly line until all orders processed
-	// 	while (!lm.run(cout));
-	// 	cout << endl << endl;
-	// }
-	// catch (const string& msg) {
-	// 	cerr << msg << '\n';
-	// 	return 2;
-	// }
+		// 	cout << "========================================" << endl;
+		// 	cout << "=           Filling Orders             =" << endl;
+		// 	cout << "========================================" << endl;
+		// 	//run the assembly line until all orders processed
+		// 	while (!lm.run(cout));
+		// 	cout << endl << endl;
+	}
+	catch (const string &msg)
+	{
+		cerr << msg << '\n';
+		return 2;
+	}
 
 	// cout << "========================================" << endl;
 	// cout << "=      Processed Orders (complete)     =" << endl;
