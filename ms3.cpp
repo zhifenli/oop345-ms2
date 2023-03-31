@@ -92,13 +92,13 @@ int main(int argc, char **argv)
 		cout << endl
 			 << endl;
 
-		// cout << "========================================" << endl;
-		// cout << "=       Display Stations (loaded)      =" << endl;
-		// cout << "========================================" << endl;
-		// LineManager lm(argv[4], theStations);
-		// lm.display(cout);
-		// cout << endl
-		// 	 << endl;
+		cout << "========================================" << endl;
+		cout << "=       Display Stations (loaded)      =" << endl;
+		cout << "========================================" << endl;
+		LineManager lm(argv[4], theStations);
+		lm.display(cout);
+		cout << endl
+			 << endl;
 
 		// 	cout << "========================================" << endl;
 		// 	cout << "=      Display Stations (ordered)      =" << endl;

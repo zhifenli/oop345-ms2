@@ -8,7 +8,7 @@ namespace sdds
 {
     class LineManager
     {
-        std::vector<Workstation *> m_activeLine;
+        std::vector<Workstation *> m_activeLine{};
         size_t m_cntCustomerOrder;
         Workstation *m_firstStation;
 

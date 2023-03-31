@@ -1,5 +1,5 @@
-rm ./a.out
+rm -f ./ms3
 
-g++ -std=c++17 *.cpp
+g++  -std=c++17 *.cpp -o ms3 
 
-./a.out Stations1.txt Stations2.txt CustomerOrders.txt AssemblyLine.txt
+./ms3 Stations1.txt Stations2.txt CustomerOrders.txt AssemblyLine.txt
