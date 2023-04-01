@@ -61,30 +61,19 @@ namespace sdds
             if (m_activeLine[i] == nullptr)
             {
                 // end line
-                auto fr = m_activeLine.begin() + i - 1;
-                auto to = m_activeLine.begin() + i;
-                auto endFr = m_activeLine.end() - 2;
-                std::swap_ranges(fr, to, endFr);
+                swap2(i - 1, m_activeLine.size() - 2);
                 nextToIndex = m_activeLine.size() - 2;
                 break;
             }
         }
 
-        // cout << "nextToIndex: " << nextToIndex << endl;
-        // cout << "???: " << m_activeLine[nextToIndex]->getItemName() << endl;
         while (nextToIndex > 0 && nextToIndex < m_activeLine.size())
         {
-            // cout << "while: " << nextToIndex << endl;
-            // if (nextToIndex > 20)
-            //     break;
-            for (auto i = 0; i < m_activeLine.size(); i++)
+            for (auto i = 1; i < nextToIndex; i += 2)
             {
-                // cout << "for: " << i << endl;
-
-                // find head pointing to prev end, which is m_activeLine[size-2]
                 if (m_activeLine[i] == m_activeLine[nextToIndex])
                 {
-                    std::swap_ranges(m_activeLine.begin() + i - 1, m_activeLine.begin() + i, m_activeLine.begin() + nextToIndex - 2);
+                    swap2(i - 1, nextToIndex - 2);
                     nextToIndex -= 2;
                 }
             }
@@ -112,5 +101,20 @@ namespace sdds
             }
             cout << endl;
         }
+    }
+
+    void LineManager::swap2(size_t i1, size_t i2)
+    {
+        if (i1 < 0 || i2 < 0)
+            return;
+        auto tmp = m_activeLine[i1];
+        m_activeLine[i1] = m_activeLine[i2];
+        m_activeLine[i2] = tmp;
+
+        i1++;
+        i2++;
+        tmp = m_activeLine[i1];
+        m_activeLine[i1] = m_activeLine[i2];
+        m_activeLine[i2] = tmp;
     }
 }

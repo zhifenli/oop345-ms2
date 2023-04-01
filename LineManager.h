@@ -17,6 +17,7 @@ namespace sdds
         void reorderStations();
         bool run(std::ostream &os);
         void display(std::ostream &os) const;
+        void swap2(size_t i1, size_t i2);
     };
 
 }
