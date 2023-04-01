@@ -22,4 +22,5 @@ namespace sdds
         static char getDelimiter();
     };
     std::string trim(std::string str);
+    // void split(std::string line, char delim, std::vector<std::string> &results);
 }

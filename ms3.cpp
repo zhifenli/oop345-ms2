@@ -100,12 +100,13 @@ int main(int argc, char **argv)
 		cout << endl
 			 << endl;
 
-		// 	cout << "========================================" << endl;
-		// 	cout << "=      Display Stations (ordered)      =" << endl;
-		// 	cout << "========================================" << endl;
-		// 	lm.reorderStations();
-		// 	lm.display(cout);
-		// 	cout << endl << endl;
+		cout << "========================================" << endl;
+		cout << "=      Display Stations (ordered)      =" << endl;
+		cout << "========================================" << endl;
+		lm.reorderStations();
+		lm.display(cout);
+		cout << endl
+			 << endl;
 
 		// 	cout << "========================================" << endl;
 		// 	cout << "=           Filling Orders             =" << endl;
