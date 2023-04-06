@@ -33,13 +33,9 @@ namespace sdds
             }
         } while (more);
 
-        // cout << "\t m_cntItem: " << m_cntItem << endl;
-        // unique_ptr<Item> m_lstItem(new Item *[m_cntItem]);
-
         m_lstItem = new Item *[m_cntItem];
-        for (int i = 0; i < m_cntItem; i++)
+        for (size_t i = 0; i < m_cntItem; i++)
         {
-            // unique_ptr<Item> m_lstItem[i](new Item(temp[i]));
             m_lstItem[i] = new Item(temp[i]);
         }
     }
@@ -52,19 +48,14 @@ namespace sdds
     CustomerOrder::CustomerOrder(CustomerOrder &&src) noexcept
     {
         m_lstItem = nullptr;
-        cout << "CustomerOrder MOVE" << endl;
         *this = std::move(src);
     }
     CustomerOrder &CustomerOrder::operator=(CustomerOrder &&src) noexcept
     {
-        // cout << "Moving ..." << src.m_name << endl;
         if (this != &src)
         {
-            // cout << "****m_cntItem: " << m_cntItem << endl;
-            for (int i = 0; i < m_cntItem; i++)
+            for (size_t i = 0; i < m_cntItem; i++)
             {
-                // cout << "****  i : " << i << endl;
-
                 delete m_lstItem[i];
                 m_lstItem[i] = nullptr;
             }
@@ -89,7 +80,7 @@ namespace sdds
 
     CustomerOrder::~CustomerOrder()
     {
-        for (int i = 0; i < m_cntItem; i++)
+        for (size_t i = 0; i < m_cntItem; i++)
         {
             delete m_lstItem[i];
         }
@@ -98,7 +89,6 @@ namespace sdds
 
     std::string CustomerOrder::getName() const
     {
-        // cout << "ORDER NAME " << m_name << endl;
         return m_name;
     }
 
@@ -116,16 +106,16 @@ namespace sdds
         for (size_t i = 0; i < m_cntItem; i++)
         {
             if (m_lstItem[i]->m_itemName == itemName && !m_lstItem[i]->m_isFilled)
-                return true;
+                return false;
         }
-        return false;
+        return true;
     }
 
     size_t CustomerOrder::findItemByName(std::string name, bool &isFound)
     {
         for (size_t i = 0; i < m_cntItem; i++)
         {
-            if (m_lstItem[i]->m_itemName == name)
+            if (m_lstItem[i]->m_itemName == name && !m_lstItem[i]->m_isFilled)
             {
                 isFound = true;
                 return i;
@@ -137,14 +127,11 @@ namespace sdds
 
     void CustomerOrder::fillItem(Station &station, std::ostream &os)
     {
-        cout << "#### fill item1: " << station.getItemName() << endl;
         bool isFound = false;
         size_t index = findItemByName(station.getItemName(), isFound);
 
         if (!isFound)
         {
-            cout << "#### fill item1: not found " << station.getItemName() << endl;
-
             return;
         }
 
@@ -154,11 +141,11 @@ namespace sdds
             station.updateQuantity();
             iptr->m_serialNumber = station.getNextSerialNumber();
             iptr->m_isFilled = true;
-            os << "Filled " << m_name << ", " << m_product << " [" << iptr->m_itemName << "]" << endl;
+            os << "    Filled " << m_name << ", " << m_product << " [" << iptr->m_itemName << "]" << endl;
         }
         else
         {
-            os << "Unable to fill " << m_name << ", " << m_product << " [" << iptr->m_itemName << "]" << endl;
+            os << "    Unable to fill " << m_name << ", " << m_product << " [" << iptr->m_itemName << "]" << endl;
         }
     }
     void CustomerOrder::display(std::ostream &os) const
@@ -167,11 +154,11 @@ namespace sdds
 
         os << endl;
 
-        for (int i = 0; i < m_cntItem; i++)
+        for (size_t i = 0; i < m_cntItem; i++)
         {
-            os << "[" << setw(6) << setfill('0') << m_lstItem[i]->m_serialNumber << "] ";
+            os << "[" << setw(6) << setfill('0') << right << m_lstItem[i]->m_serialNumber << "] ";
             os << setw(m_widthField) << setfill(' ') << left << m_lstItem[i]->m_itemName;
-            os << " -";
+            os << "  - ";
             if (m_lstItem[i]->m_isFilled)
             {
                 os << "FILLED";
@@ -183,5 +170,4 @@ namespace sdds
             os << endl;
         }
     }
-
 }
