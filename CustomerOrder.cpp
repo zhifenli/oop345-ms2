@@ -34,7 +34,7 @@ namespace sdds
         } while (more);
 
         m_lstItem = new Item *[m_cntItem];
-        for (int i = 0; i < m_cntItem; i++)
+        for (size_t i = 0; i < m_cntItem; i++)
         {
             m_lstItem[i] = new Item(temp[i]);
         }
@@ -54,7 +54,7 @@ namespace sdds
     {
         if (this != &src)
         {
-            for (int i = 0; i < m_cntItem; i++)
+            for (size_t i = 0; i < m_cntItem; i++)
             {
                 delete m_lstItem[i];
                 m_lstItem[i] = nullptr;
@@ -80,7 +80,7 @@ namespace sdds
 
     CustomerOrder::~CustomerOrder()
     {
-        for (int i = 0; i < m_cntItem; i++)
+        for (size_t i = 0; i < m_cntItem; i++)
         {
             delete m_lstItem[i];
         }
@@ -154,11 +154,11 @@ namespace sdds
 
         os << endl;
 
-        for (int i = 0; i < m_cntItem; i++)
+        for (size_t i = 0; i < m_cntItem; i++)
         {
             os << "[" << setw(6) << setfill('0') << m_lstItem[i]->m_serialNumber << "] ";
-            os << setw(m_widthField) << setfill(' ') << left << m_lstItem[i]->m_itemName;
-            os << " -";
+            os << setw(m_widthField + 1) << setfill(' ') << left << m_lstItem[i]->m_itemName;
+            os << " - ";
             if (m_lstItem[i]->m_isFilled)
             {
                 os << "FILLED";
