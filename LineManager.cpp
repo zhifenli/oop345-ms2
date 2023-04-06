@@ -1,15 +1,15 @@
-#include <iostream>
-#include <vector>
-#include <fstream>
-
 #include "LineManager.h"
-#include "Workstation.h"
 using namespace std;
 namespace sdds
 {
+    int COUNT = 0;
     LineManager::LineManager(const std::string &file, const std::vector<Workstation *> &stations)
     {
         std::ifstream is(file);
+        if (!is)
+        {
+            throw std::string("Unable to open " + file + "file.");
+        }
         string line = {};
         if (file.length() != 0)
         {
@@ -46,9 +46,15 @@ namespace sdds
                 m_activeLine.push_back(s1);
                 m_activeLine.push_back(s2);
             }
-
+            m_firstStation = m_activeLine[0];
             is.close();
         }
+        // std::vector<Workstation *> t_activeLine = m_activeLine;
+        // Workstation *t_firstStation{};
+        // for_each(t_activeLine.begin(), t_activeLine.end(), [&t_firstStation, &t_activeLine](Workstation *ws)
+        //          { bool found(); });
+        // for_each(t_activeLine.begin(), t_activeLine.end(), [&ws, &found, &t_firstStation](Workstation *ns)
+        //          { if (ns->getNextStation() && ws->getItemName(0)) });
     }
 
     void LineManager::reorderStations()
@@ -78,12 +84,55 @@ namespace sdds
                 }
             }
         }
+
+        // remove duplicates
+        std::vector<Workstation *> copies;
+
+        for (auto i = 0; i < m_activeLine.size(); i++)
+        {
+            if (m_activeLine[i] && (copies.empty() || copies.back() != m_activeLine[i]))
+            {
+                copies.push_back(m_activeLine[i]);
+            }
+        }
+
+        m_activeLine.clear();
+        for (auto i = 0; i < copies.size(); i++)
+        {
+            if (i > 0)
+            {
+                copies[i - 1]->setNextStation(copies[i]);
+            }
+            m_activeLine.push_back(copies[i]);
+        }
+        m_activeLine.back()->setNextStation(nullptr);
+        m_firstStation = m_activeLine[0];
     }
 
     bool LineManager::run(std::ostream &os)
     {
+        COUNT++;
+        cout << "Line Manager Iteration: " << COUNT << endl;
 
-        return false;
+        if (g_pending.empty())
+        {
+            throw std::string("No pending order");
+        }
+
+        (*m_firstStation) += std::move(g_pending.front());
+        g_pending.pop_front();
+
+        Workstation *cur = m_firstStation;
+
+        while (cur)
+        {
+            cout << "@ Station: " << cur->getItemName() << endl;
+            cur->fill(os);
+            cur->attemptToMoveOrder();
+            cur = cur->getNextStation();
+        }
+
+        return g_pending.empty();
     }
 
     void LineManager::display(std::ostream &os) const

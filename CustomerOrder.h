@@ -27,6 +27,7 @@ namespace sdds
         size_t findItemByName(std::string name, bool &isFound);
 
     public:
+        std::string getName() const;
         CustomerOrder(const std::string &str);
         CustomerOrder(const CustomerOrder &src);
         CustomerOrder &operator=(const CustomerOrder &src) = delete;

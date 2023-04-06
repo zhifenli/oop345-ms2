@@ -108,12 +108,14 @@ int main(int argc, char **argv)
 		cout << endl
 			 << endl;
 
-		// 	cout << "========================================" << endl;
-		// 	cout << "=           Filling Orders             =" << endl;
-		// 	cout << "========================================" << endl;
-		// 	//run the assembly line until all orders processed
-		// 	while (!lm.run(cout));
-		// 	cout << endl << endl;
+		cout << "========================================" << endl;
+		cout << "=           Filling Orders             =" << endl;
+		cout << "========================================" << endl;
+		// run the assembly line until all orders processed
+		while (!lm.run(cout))
+			;
+		cout << endl
+			 << endl;
 	}
 	catch (const string &msg)
 	{
@@ -121,30 +123,32 @@ int main(int argc, char **argv)
 		return 2;
 	}
 
-	// cout << "========================================" << endl;
-	// cout << "=      Processed Orders (complete)     =" << endl;
-	// cout << "========================================" << endl;
-	// for (const auto& o : g_completed)
-	// 	o.display(cout);
-	// cout << endl << endl;
+	cout << "========================================" << endl;
+	cout << "=      Processed Orders (complete)     =" << endl;
+	cout << "========================================" << endl;
+	for (const auto &o : g_completed)
+		o.display(cout);
+	cout << endl
+		 << endl;
 
-	// cout << "========================================" << endl;
-	// cout << "=     Processed Orders (incomplete)    =" << endl;
-	// cout << "========================================" << endl;
-	// for (const auto& o : g_incomplete)
-	// 	o.display(cout);
-	// cout << endl << endl;
+	cout << "========================================" << endl;
+	cout << "=     Processed Orders (incomplete)    =" << endl;
+	cout << "========================================" << endl;
+	for (const auto &o : g_incomplete)
+		o.display(cout);
+	cout << endl
+		 << endl;
 
-	// cout << "========================================" << endl;
-	// cout << "=          Inventory (full)            =" << endl;
-	// cout << "========================================" << endl;
-	// for (const Station* theItem : theStations)
-	// 	theItem->display(cout, true);
-	// cout << endl;
+	cout << "========================================" << endl;
+	cout << "=          Inventory (full)            =" << endl;
+	cout << "========================================" << endl;
+	for (const Station *theItem : theStations)
+		theItem->display(cout, true);
+	cout << endl;
 
-	// // cleanup
-	// for (auto station : theStations)
-	// 	delete station;
+	// cleanup
+	for (auto station : theStations)
+		delete station;
 
 	return 0;
 }

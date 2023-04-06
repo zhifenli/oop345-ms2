@@ -6,8 +6,8 @@ using namespace std;
 namespace sdds
 {
     std::deque<CustomerOrder> g_pending{};
-    std::deque<CustomerOrder> g_completed;
-    std::deque<CustomerOrder> g_incomplete;
+    std::deque<CustomerOrder> g_completed{};
+    std::deque<CustomerOrder> g_incomplete{};
 
     Workstation::Workstation(const std::string &str) : Station(str)
     {
@@ -15,10 +15,11 @@ namespace sdds
 
     void Workstation::fill(std::ostream &os)
     {
+
         if (!m_orders.empty())
         {
-            auto order = m_orders.front();
-            order.fillItem(*this, os);
+            cout << "ORDER: " << m_orders.front().getName() << endl;
+            m_orders.front().fillItem(*this, os);
         }
     }
 
@@ -28,15 +29,13 @@ namespace sdds
         {
             return false;
         }
-
-        auto order = m_orders.front();
+        auto order = move(m_orders.front());
+        m_orders.pop_front();
 
         if (!order.isItemFilled(this->getItemName()))
         {
             return false;
         }
-
-        m_orders.pop_front();
 
         if (!m_pNextStation)
         {
@@ -80,7 +79,8 @@ namespace sdds
 
     Workstation &Workstation::operator+=(CustomerOrder &&newOrder)
     {
-        m_orders.push_back(move(newOrder));
+        m_orders.push_back(std::move(newOrder));
+        // cout << "#####m_orders 2: " << m_orders.empty() << endl;
         return *this;
     }
 

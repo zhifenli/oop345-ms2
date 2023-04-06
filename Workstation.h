@@ -1,4 +1,6 @@
-#pragma once
+#ifndef WORKSTATION_H_
+#define WORKSTATION_H_
+
 #include <deque>
 #include "Station.h"
 #include "CustomerOrder.h"
@@ -11,8 +13,8 @@ namespace sdds
 
     class Workstation : public Station
     {
-        std::deque<CustomerOrder> m_orders;
-        Workstation *m_pNextStation;
+        std::deque<CustomerOrder> m_orders{};
+        Workstation *m_pNextStation{};
 
     public:
         Workstation(const std::string &str);
@@ -24,3 +26,4 @@ namespace sdds
         Workstation &operator+=(CustomerOrder &&newOrder);
     };
 }
+#endif

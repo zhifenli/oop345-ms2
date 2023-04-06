@@ -11,11 +11,11 @@ namespace sdds
 {
     class Station
     {
-        int m_id;
-        std::string m_name;
-        std::string m_desc;
-        size_t m_serialNumber;
-        size_t m_quantity;
+        int m_id{};
+        std::string m_name{};
+        std::string m_desc{};
+        size_t m_serialNumber{0};
+        size_t m_quantity{0};
 
         inline static size_t m_widthField{0};
         inline static size_t id_generator{0};

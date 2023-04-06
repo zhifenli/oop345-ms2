@@ -8,7 +8,7 @@
 using namespace std;
 namespace sdds
 {
-    CustomerOrder::CustomerOrder(const std::string &str)
+    CustomerOrder::CustomerOrder(const std::string &str) : m_lstItem(nullptr)
     {
         Utilities ut;
         size_t next_pos = 0;
@@ -46,12 +46,13 @@ namespace sdds
 
     CustomerOrder::CustomerOrder(const CustomerOrder &src)
     {
-        throw std::string(" ERROR: Cannot make copies.");
+        throw std::string(" ERROR: Cannot make copies of CustomerOrder.");
     }
 
     CustomerOrder::CustomerOrder(CustomerOrder &&src) noexcept
     {
-
+        m_lstItem = nullptr;
+        cout << "CustomerOrder MOVE" << endl;
         *this = std::move(src);
     }
     CustomerOrder &CustomerOrder::operator=(CustomerOrder &&src) noexcept
@@ -94,6 +95,13 @@ namespace sdds
         }
         delete[] m_lstItem;
     }
+
+    std::string CustomerOrder::getName() const
+    {
+        // cout << "ORDER NAME " << m_name << endl;
+        return m_name;
+    }
+
     bool CustomerOrder::isOrderFilled() const
     {
         for (size_t i = 0; i < m_cntItem; i++)
@@ -129,11 +137,14 @@ namespace sdds
 
     void CustomerOrder::fillItem(Station &station, std::ostream &os)
     {
+        cout << "#### fill item1: " << station.getItemName() << endl;
         bool isFound = false;
         size_t index = findItemByName(station.getItemName(), isFound);
 
         if (!isFound)
         {
+            cout << "#### fill item1: not found " << station.getItemName() << endl;
+
             return;
         }
 
