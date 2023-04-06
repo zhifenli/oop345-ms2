@@ -15,43 +15,39 @@ namespace sdds
 
     void Workstation::fill(std::ostream &os)
     {
-
         if (!m_orders.empty())
         {
-            cout << "ORDER: " << m_orders.front().getName() << endl;
             m_orders.front().fillItem(*this, os);
         }
     }
 
     bool Workstation::attemptToMoveOrder()
     {
-        if (m_orders.empty())
+        bool isMoved = false;
+        if (!m_orders.empty())
         {
-            return false;
-        }
-        auto order = move(m_orders.front());
-        m_orders.pop_front();
-
-        if (!order.isItemFilled(this->getItemName()))
-        {
-            return false;
-        }
-
-        if (!m_pNextStation)
-        {
-            if (order.isOrderFilled())
+            if (m_orders.front().isItemFilled(getItemName()) || getQuantity() == 0)
             {
-                g_completed.push_back(order);
+                if (!m_pNextStation)
+                {
+                    if (m_orders.front().isOrderFilled())
+                    {
+                        g_completed.push_back(std::move(m_orders.front()));
+                    }
+                    else
+                    {
+                        g_incomplete.push_back(std::move(m_orders.front()));
+                    }
+                }
+                else
+                {
+                    *m_pNextStation += std::move(m_orders.front());
+                }
+                m_orders.pop_front();
+                isMoved = true;
             }
-            else
-            {
-                g_incomplete.push_back(order);
-            }
-            return false;
         }
-
-        *m_pNextStation += std::move(order);
-        return true;
+        return isMoved;
     }
 
     void Workstation::setNextStation(Workstation *station)
@@ -66,21 +62,19 @@ namespace sdds
 
     void Workstation::display(std::ostream &os) const
     {
-        os << this->getItemName() << "-->";
-        if (!this->m_pNextStation)
+        if (m_pNextStation)
         {
-            os << "End of Line" << endl;
+            os << Station::getItemName() << " --> " << m_pNextStation->getItemName() << endl;
         }
         else
         {
-            m_pNextStation->display(os);
+            os << Station::getItemName() << " --> End of Line" << endl;
         }
     }
 
     Workstation &Workstation::operator+=(CustomerOrder &&newOrder)
     {
         m_orders.push_back(std::move(newOrder));
-        // cout << "#####m_orders 2: " << m_orders.empty() << endl;
         return *this;
     }
 
