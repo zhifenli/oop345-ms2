@@ -26,7 +26,7 @@ namespace sdds
         bool isMoved = false;
         if (!m_orders.empty())
         {
-            if (m_orders.front().isItemFilled(getItemName()) || getQuantity() == 0)
+            if (m_orders.front().isItemFilled(getItemName()) || getQuantity() <= 0)
             {
                 if (!m_pNextStation)
                 {

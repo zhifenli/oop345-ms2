@@ -103,6 +103,11 @@ namespace sdds
                  [&os](Workstation *ws)
                  {
                      ws->fill(os);
+                 });
+
+        for_each(m_activeLine.begin(), m_activeLine.end(),
+                 [](Workstation *ws)
+                 {
                      ws->attemptToMoveOrder();
                  });
 
