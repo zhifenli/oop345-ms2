@@ -36,7 +36,6 @@ namespace sdds
 
     size_t Station::getNextSerialNumber()
     {
-
         return m_serialNumber++;
     }
     size_t Station::getQuantity() const

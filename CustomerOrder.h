@@ -24,7 +24,7 @@ namespace sdds
         Item **m_lstItem{nullptr};
 
         inline static size_t m_widthField{0};
-        size_t findItemByName(std::string name, bool &isFound);
+        size_t findItemByNameUnfilled(std::string name, bool &isFound);
 
     public:
         std::string getName() const;

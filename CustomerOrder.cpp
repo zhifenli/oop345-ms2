@@ -8,6 +8,7 @@
 using namespace std;
 namespace sdds
 {
+
     CustomerOrder::CustomerOrder(const std::string &str) : m_lstItem(nullptr)
     {
         Utilities ut;
@@ -17,10 +18,6 @@ namespace sdds
         m_name = trim(ut.extractToken(str, next_pos, more));
         m_product = trim(ut.extractToken(str, next_pos, more));
 
-        if (m_widthField < ut.getFieldWidth())
-        {
-            m_widthField = ut.getFieldWidth();
-        }
         string s = {};
 
         do
@@ -37,6 +34,15 @@ namespace sdds
         for (size_t i = 0; i < m_cntItem; i++)
         {
             m_lstItem[i] = new Item(temp[i]);
+        }
+
+        if (m_widthField < m_product.length())
+        {
+            m_widthField = m_product.length();
+        }
+        if (m_widthField < ut.getFieldWidth())
+        {
+            m_widthField = ut.getFieldWidth();
         }
     }
 
@@ -96,7 +102,7 @@ namespace sdds
     {
         for (size_t i = 0; i < m_cntItem; i++)
         {
-            if (m_lstItem[i]->m_isFilled == false)
+            if (!m_lstItem[i]->m_isFilled)
                 return false;
         }
         return true;
@@ -111,7 +117,7 @@ namespace sdds
         return true;
     }
 
-    size_t CustomerOrder::findItemByName(std::string name, bool &isFound)
+    size_t CustomerOrder::findItemByNameUnfilled(std::string name, bool &isFound)
     {
         for (size_t i = 0; i < m_cntItem; i++)
         {
@@ -128,26 +134,34 @@ namespace sdds
     void CustomerOrder::fillItem(Station &station, std::ostream &os)
     {
         bool isFound = false;
-        size_t index = findItemByName(station.getItemName(), isFound);
-
+        size_t startIndex = findItemByNameUnfilled(station.getItemName(), isFound);
         if (!isFound)
         {
             return;
         }
 
-        Item *iptr = m_lstItem[index];
-        if (station.getQuantity() > 0)
+        for (size_t i = startIndex; i < m_cntItem; i++)
         {
-            station.updateQuantity();
-            iptr->m_serialNumber = station.getNextSerialNumber();
-            iptr->m_isFilled = true;
-            os << "    Filled " << m_name << ", " << m_product << " [" << iptr->m_itemName << "]" << endl;
-        }
-        else
-        {
-            os << "    Unable to fill " << m_name << ", " << m_product << " [" << iptr->m_itemName << "]" << endl;
+            Item *item = m_lstItem[i];
+            if (item->m_itemName == station.getItemName())
+            {
+                if (station.getQuantity() > 0)
+                {
+                    station.updateQuantity();
+                    item->m_serialNumber = station.getNextSerialNumber();
+                    item->m_isFilled = true;
+
+                    os << "    Filled " << m_name << ", " << m_product << " [" << item->m_itemName << "]" << endl;
+                    break;
+                }
+                else
+                {
+                    os << "    Unable to fill " << m_name << ", " << m_product << " [" << item->m_itemName << "]" << endl;
+                }
+            }
         }
     }
+
     void CustomerOrder::display(std::ostream &os) const
     {
         os << m_name << " - " << m_product;
